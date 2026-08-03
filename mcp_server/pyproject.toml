@@ -1,0 +1,8 @@
+[project]
+name = "famas-mcp-data-server"
+version = "2.1.0"
+description = "MCP data server for FAMAS - Fund Analysis Multi-Agent System. 10 tools covering all 10 agents' data needs (basic info, nav, holdings, manager, index, announcements, realtime, capital flow, push)."
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.0.0",
+    "fast

@@ -315,50 +315,38 @@ cd FAMAS-Skill
 ### 2. 安装依赖
 
 ```bash
-pip install akshare pandas numpy
+# MCP 数据层
+pip install akshare pandas mcp --break-system-packages
 ```
 
-### 3. 在 TRAE 中使用
+### 3. 配置 MCP Server
 
-将 `.trae/skills/famas-fund-analysis/` 目录复制到你的 TRAE 工作区的 `.trae/skills/` 目录下：
+在 `%APPDATA%/Claude/claude_desktop_config.json` 中追加：
 
-```bash
-cp -r .trae/skills/famas-fund-analysis /path/to/your/workspace/.trae/skills/
+```json
+{
+  "mcpServers": {
+    "famas-data": {
+      "command": "python3",
+      "args": ["C:/path/to/FAMAS-Skill/mcp_server/server.py"],
+      "description": "FAMAS 基金投研数据服务 — 10 tools / 10 agents / AKShare & 实时行情推送"
+    }
+  }
+}
 ```
 
-### 4. 在 Claude Code 中使用
+### 4. 使用 Skill
 
-将 `.claude/skills/` 目录复制到你的项目根目录下：
+启动 Claude Desktop 后，4 个 Slash 命令自动可用。支持添加 Webhook 推送地址实现预警通知自动下发。
 
-```bash
-cp -r .claude/skills /path/to/your/project/.claude/skills
-```
+### 5. 命令速查 ⌨️
 
-### 5. 在 OpenAI Codex CLI 中使用
-
-将 `.agents/skills/` 目录和 `AGENTS.md` 复制到你的项目根目录下：
-
-```bash
-cp -r .agents/skills /path/to/your/project/.agents/skills
-cp AGENTS.md /path/to/your/project/AGENTS.md
-```
-
-Codex 会自动识别 `.agents/skills/` 中的 Skills，根据 `description` 中的触发词自动加载。
-
-### 6. 命令速查 ⌨️
-
-| 平台 | 命令 | 用途 | 示例 |
-|------|------|------|------|
-| Claude Code | `/famas-analyze-fund` | 单基金深度分析 | `/famas-analyze-fund 020712` |
-| Claude Code | `/famas-screen-fund` | 行业/偏好筛选 | `/famas-screen-fund 科技成长` |
-| Claude Code | `/famas-diagnose-portfolio` | 组合持仓诊断 | `/famas-diagnose-portfolio 020712(30%), 005911(25%)` |
-| Claude Code | `/famas-monitor-fund` | 持续监控预警 | `/famas-monitor-fund 020712, 005911` |
-| Codex | `famas-analyze-fund` | 单基金深度分析 | 自动触发或手动调用 |
-| Codex | `famas-screen-fund` | 行业/偏好筛选 | 自动触发或手动调用 |
-| Codex | `famas-diagnose-portfolio` | 组合持仓诊断 | 自动触发或手动调用 |
-| Codex | `famas-monitor-fund` | 持续监控预警 | 自动触发或手动调用 |
-
-Claude Code 和 Codex 都会根据对话内容自动触发对应的 Skill，无需手动输入命令。
+| 命令 | 用途 | 示例 |
+|------|------|------|
+| `/famas-analyze-fund` | 单基金深度分析（6 Agent 流水线） | `/famas-analyze-fund 005911` |
+| `/famas-screen-fund` | 行业/风格筛选 + 资金流向 + 横向 PK | `/famas-screen-fund 科技成长` |
+| `/famas-diagnose-portfolio` | 组合持仓风险诊断 + 再平衡 | `/famas-diagnose-portfolio 005911(40%), 161725(30%)` |
+| `/famas-monitor-fund` | 实时行情/资金流向监控 + Webhook 消息推送 | `/famas-monitor-fund 005911, 161725` |
 
 ---
 
@@ -366,61 +354,46 @@ Claude Code 和 Codex 都会根据对话内容自动触发对应的 Skill，无�
 
 ```
 FAMAS-Skill/
-├── AGENTS.md                     # Codex 项目级指令文件
-├── .trae/
-│   └── skills/
-│       └── famas-fund-analysis/
-│           └── SKILL.md          # TRAE Skill 主文档
-├── .claude/
-│   └── skills/
-│       ├── famas-analyze-fund/
-│       │   └── SKILL.md          # Claude Code: /famas-analyze-fund
-│       ├── famas-screen-fund/
-│       │   └── SKILL.md          # Claude Code: /famas-screen-fund
-│       ├── famas-diagnose-portfolio/
-│       │   └── SKILL.md          # Claude Code: /famas-diagnose-portfolio
-│       └── famas-monitor-fund/
-│           └── SKILL.md          # Claude Code: /famas-monitor-fund
-├── .agents/
-│   └── skills/
-│       ├── famas-analyze-fund/
-│       │   └── SKILL.md          # Codex: 单基金深度分析
-│       ├── famas-screen-fund/
-│       │   └── SKILL.md          # Codex: 行业/偏好筛选
-│       ├── famas-diagnose-portfolio/
-│       │   └── SKILL.md          # Codex: 组合持仓诊断
-│       └── famas-monitor-fund/
-│           └── SKILL.md          # Codex: 持续监控预警
-├── agents/                       # 各Agent的System Prompt
-│   ├── prospectus_analyzer.md
-│   ├── performance_analyst.md
-│   ├── cost_analyzer.md
-│   ├── manager_profiler.md
-│   ├── macro_strategist.md
-│   ├── wealth_advisor.md
-│   ├── sector_screener.md
-│   ├── fund_comparator.md
-│   ├── portfolio_doctor.md
-│   └── watchtower.md
-├── workflows/                    # 工作流定义
-│   ├── workflow_a_single_fund.md
+├── mcp_server/                    # MCP 数据工具层（FastMCP + AKShare + 10 工具）
+│   ├── server.py                  # 主入口：10 个 tool 全部 inline 注册
+│   ├── pyproject.toml             # 依赖: mcp + fastmcp + akshare + pandas + requests
+│   └── utils/                     # 校验器 + TTL 缓存封装
+│       ├── validators.py          # 10 个工具的输入参数校验
+│       └── ak_wrapper.py          # AKShare/东财接口包装 + 实时行情与 Webhook 推送
+
+├── agents/                        # 11 个 Agent 的 System Prompt（含 frontmatter）
+│   ├── prospectus_analyzer.md     # L2 文档解析
+│   ├── performance_analyst.md     # L2 业绩归因（含 few-shot）
+│   ├── cost_analyzer.md           # L2 费率穿透（含 few-shot）
+│   ├── manager_profiler.md        # L2 经理画像
+│   ├── macro_strategist.md        # L1 宏观适配
+│   ├── wealth_advisor.md          # L4 综合评级（含 few-shot）
+│   ├── sector_screener.md         # L3 行业筛选
+│   ├── fund_comparator.md         # L3 横向 PK
+│   ├── portfolio_doctor.md        # L4 组合诊断
+│   ├── watchtower.md              # L0 监控预警
+│   └── personal_investment_advisor.md  # 组合顾问（合规版）
+├── workflows/                     # 4 条工作流编排规范
+│   ├── workflow_a_single_fund.md  # 单基金分析（含冲突检测/降级/加权公式）
 │   ├── workflow_b_sector_screen.md
 │   ├── workflow_c_portfolio.md
 │   └── workflow_d_monitoring.md
-├── templates/                    # 输出模板
+├── templates/                     # 4 份输出报告模板
 │   ├── comprehensive_rating_card.md
 │   ├── sector_screening_report.md
 │   ├── portfolio_diagnosis_report.md
 │   └── monitoring_alert_report.md
-└── README.md
-```
-
----
-
-## 许可证 📜
-
-[MIT](LICENSE)
-
-> **文档版本**: v2.1
-> **最后更新**: 2026-06-21
-> **维护者**: Fund Analysis Multi-Agent System Team
+├── scripts/                       # 数据管线脚本（etfirst/腾讯/AKShare/hithink）
+│   ├── data_scheduler.py          # 数据服务调度（新鲜度标记）
+│   ├── auto_fund_flow.py          # 板块资金自动获取
+│   ├── fund_flow_tracker.py       # 资金流周度追踪
+│   ├── calc_rsi.py                # RSI(14) 计算
+│   ├── score_with_emotion.py      # 恐贪+RSI 情绪校准评分
+│   └── fetchers/                  # 腾讯/新浪/东财行情获取器
+├── data/                          # 运行数据（板块资金流）
+├── .claude/skills/                # Claude Code Skill 定义
+│   ├── famas-analyze-fund/SKILL.md
+│   ├── famas-screen-fund/SKILL.md
+│   ├── famas-diagnose-portfolio/SKILL.md
+│   ├── famas-monitor-fund/SKILL.md
+│   ├── famas-score-fund/SKILL.md  # 评分卡（合

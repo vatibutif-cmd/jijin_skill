@@ -1,5 +1,5 @@
 ---
-description: "根据行业/主题/风格偏好从全市场筛选基金标的，并进行横向对比PK。当用户需要找某类基金、筛选基金、对比基金时使用。触发词：筛选基金、找基金、基金对比、推荐基金"
+description: "按行业/主题/风格偏好全市场筛选——sector_screener初筛+fund_comparator横向PK输出Top10候选池与淘汰建议。数据源: famas-data MCP Server(AKShare)。当用户需要找某类基金、筛选基金、对比基金时使用。v2.0"
 argument-hint: "[偏好描述，如：科技成长、消费主题、红利低波]"
 arguments:
   - preference
@@ -67,3 +67,5 @@ arguments:
 - 筛选逻辑需透明说明
 - 对风格漂移严重的基金需排除或提示
 - 不给出明确买卖信号
+
+> **Skill版本**: v2.0 | **数据源**: famas-data MCP Server (AKShare) | **更新**: 2026-07-26

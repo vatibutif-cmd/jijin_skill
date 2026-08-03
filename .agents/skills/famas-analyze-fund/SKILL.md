@@ -1,5 +1,5 @@
 ---
-description: "对单只基金进行全方位深度分析，输出综合评级(1-5星)、时机矩阵与风险画像。当用户需要分析某只基金、查看基金评级、评估基金适配度时使用。触发词：分析基金、基金评级、基金分析、分析一下"
+description: "对单只基金进行全方位深度分析——调用6个Agent(prospectus/performance/cost/manager/macro→wealth)输出综合评级(1-5星)、时机矩阵、适配画像与风险提示。数据源: famas-data MCP Server(AKShare)。当用户需要分析某只基金、查看基金评级、评估基金适配度时使用。v2.0"
 argument-hint: "[基金代码]"
 arguments:
   - fund_code
@@ -114,3 +114,5 @@ arguments:
 ---
 *免责声明：本报告仅作信息整理与适配度分析，不构成投资建议。基金过往业绩不预示未来表现。*
 ```
+
+> **Skill版本**: v2.0 | **数据源**: famas-data MCP Server (AKShare) | **更新**: 2026-07-26

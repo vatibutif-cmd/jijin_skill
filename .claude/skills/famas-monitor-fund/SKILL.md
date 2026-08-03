@@ -1,5 +1,5 @@
 ---
-description: "对用户关注/持有的基金进行持续监控，当触发预设条件时输出预警通知。当用户需要设置基金监控、查看基金异动预警时使用。"
+description: "对持仓/关注基金进行6维持续监控——watchtower定期巡检经理变更、规模异动、风格漂移、业绩掉队、费率调整、公告风险。数据源: famas-data MCP Server(AKShare)。当用户需要设置基金监控、查看基金异动预警时使用。v2.0"
 argument-hint: "[基金代码列表，如：020712, 005911]"
 arguments:
   - fund_list
@@ -84,3 +84,5 @@ arguments:
 - 预警需按优先级排序
 - 建议关注事项需具体可操作
 - 避免给出明确交易信号
+
+> **Skill版本**: v2.0 | **数据源**: famas-data MCP Server (AKShare) | **更新**: 2026-07-26

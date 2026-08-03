@@ -1,5 +1,5 @@
 ---
-description: "对用户当前持有的多只基金进行组合级风险诊断，分析集中度、相关性，并给出再平衡建议。当用户需要诊断持仓、分析基金组合风险、优化配置时使用。触发词：诊断持仓、组合诊断、持仓分析、再平衡"
+description: "对持仓组合进行风险诊断——调用portfolio_doctor+cost_analyzer+fund_comparator分析集中度、隐性相关性与费率侵蚀，输出再平衡方案。数据源: famas-data MCP Server(AKShare)。当用户需要诊断持仓、分析基金组合风险、优化配置时使用。v2.0"
 argument-hint: "[持仓列表，如：020712(30%), 005911(25%), 161725(20%), 000083(25%)]"
 arguments:
   - holdings
@@ -76,3 +76,5 @@ arguments:
 - 再平衡建议需考虑交易成本和税费
 - 不给出具体买卖信号，只给出配置方向
 - 隐性相关性分析需深入
+
+> **Skill版本**: v2.0 | **数据源**: famas-data MCP Server (AKShare) | **更新**: 2026-07-26
