@@ -138,4 +138,23 @@ tools: WebSearch, WebFetch, Bash, Read
     "job_hop_risk_comparison": string | null
   },
   "recommendations": {
-  
+    "overall_ranking": [string],
+    "eliminate": [
+      {
+        "fund_code": string | null,
+        "reason": string | null
+      }
+    ],
+    "retain": [
+      {
+        "fund_code": string | null,
+        "reason": string | null
+      }
+    ],
+    "optimization_direction": string | null
+  },
+  "source": string | null,
+  "missing_data": [string]
+}
+```
+</output_format>

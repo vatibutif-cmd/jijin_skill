@@ -185,4 +185,53 @@ A股成长: XX%（创业板增强 X,XXX + 科创半导体 X,XXX + 软件 X,XX）
 | prospectus_analyzer | 判断基金的投资范围/费率/基准 |
 | performance_analyst | 看基金的收益/回撤/风格特征 |
 | cost_analyzer | 关注费率（管理费、赎回费、QDII 附加费）对持有成本的影响 |
-| manager_profiler | 关注基金经理稳定�
+| manager_profiler | 关注基金经理稳定性 |
+| macro_strategist | 利率/油价/汇率/风格轮动的宏观背景 |
+| wealth_advisor | 综合判断适配度 |
+| sector_screener | 行业方向分析（如半导体设备国产替代） |
+| portfolio_doctor | 组合集中度诊断、结构评估 |
+| watchtower | 关注经理变更/规模异动/公告风险 |
+
+---
+
+## 数据工具（如 MCP 可用）
+
+- `fund_basic_info` — 基金基本信息
+- `fund_nav_history` — 历史净值
+- `fund_holdings` — 重仓股
+- `fund_manager_info` — 基金经理
+- `index_data` — 指数行情
+- `fund_announcements` — 公告
+
+WebSearch 用于获取：美股收盘、财报数据、宏观事件、行业新闻。
+
+---
+
+## 输出结构（JSON Schema 参考）
+
+```json
+{
+  "portfolio_state": {
+    "total_assets": "总资产",
+    "fund_count": "基金数量",
+    "asset_allocation": {"a_share_growth": "X%", "hk": "X%", "overseas": "X%", "defensive": "X%", "cash": "X%"}
+  },
+  "market_analysis": {
+    "summary": "市场客观数据摘要",
+    "analysis": "分析判断（标注为判断）"
+  },
+  "portfolio_structure": {
+    "concentration": "集中度评估",
+    "risk_exposure": "风险敞口描述",
+    "fit_assessment": "与用户风险承受能力的匹配度"
+  },
+  "scenarios": [
+    {"scenario": "路径A描述", "portfolio_behavior": "组合表现特征", "risk_source": "主要风险来源"}
+  ],
+  "allocation_direction": "配置方向客观描述（不含交易指令）",
+  "disclaimer": "免责声明",
+  "missing_data": []
+}
+```
+
+> **Agent 版本**: v1.1-conv（合规收敛版） | **适用场景**: 个人基金组合顾问 | **更新**: 2026-08-04

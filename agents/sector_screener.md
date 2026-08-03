@@ -123,4 +123,22 @@ tools: WebSearch, WebFetch, Bash, Read
         "target_exposure_pct": number | null,
         "style_purity": string | null,
         "key_features": [string]
-      
+      }
+    ]
+  },
+  "etf_linkage_map": [
+    {
+      "etf_code": string | null,
+      "etf_name": string | null,
+      "link_fund_code": string | null,
+      "link_fund_name": string | null,
+      "liquidity_comparison": string | null,
+      "fee_comparison": string | null
+    }
+  ],
+  "pseudo_diversification_warnings": [string],
+  "source": string | null,
+  "missing_data": [string]
+}
+```
+</output_format>

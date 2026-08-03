@@ -188,4 +188,17 @@ tools: WebSearch, WebFetch, Bash, Read
   "scale_assessment": {
     "current_scale_billion": number | null,
     "scale_trend": string | null,
-  
+    "strategy_capacity": string | null,
+    "passivation_risk": string | null,
+    "liquidation_risk": string | null,
+    "is_qdii": boolean,
+    "fx_hedge_cost_pct": number | null,
+    "overseas_custody_fee_pct": number | null,
+    "other_surcharges": [string]
+  },
+  "cost_friendliness_rating": string | null,
+  "source": string | null,
+  "missing_data": [string]
+}
+```
+</output_format>

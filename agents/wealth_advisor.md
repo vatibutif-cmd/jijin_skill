@@ -253,4 +253,20 @@ tools: Read, Grep
     "sharpe_ratio": number | null,
     "style_drift_assessment": string | null
   },
-  
+  "investor_fit": {
+    "suitable_for": [string],
+    "unsuitable_for": [string],
+    "recommended_horizon": string | null
+  },
+  "key_risks": [
+    {
+      "risk_description": string | null,
+      "severity": string | null,
+      "monitoring_points": string | null
+    }
+  ],
+  "disclaimer": string,
+  "missing_data": [string]
+}
+```
+</output_format>

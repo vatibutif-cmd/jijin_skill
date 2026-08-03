@@ -354,8 +354,9 @@ pip install akshare pandas mcp --break-system-packages
 
 ```
 FAMAS-Skill/
-├── mcp_server/                    # MCP 数据工具层（FastMCP + AKShare + 10 工具）
-│   ├── server.py                  # 主入口：10 个 tool 全部 inline 注册
+├── mcp_server/                    # MCP 数据工具层（FastMCP + AKShare + 14 工具）
+│   ├── server.py                  # 主入口：14 个 tool 全部 inline 注册
+│   ├── a_stock_data/              # A股数据层（集成自 a-stock-data，腾讯/东财）
 │   ├── pyproject.toml             # 依赖: mcp + fastmcp + akshare + pandas + requests
 │   └── utils/                     # 校验器 + TTL 缓存封装
 │       ├── validators.py          # 10 个工具的输入参数校验
@@ -396,4 +397,30 @@ FAMAS-Skill/
 │   ├── famas-screen-fund/SKILL.md
 │   ├── famas-diagnose-portfolio/SKILL.md
 │   ├── famas-monitor-fund/SKILL.md
-│   ├── famas-score-fund/SKILL.md  # 评分卡（合
+│   ├── famas-score-fund/SKILL.md  # 评分卡（合规版）
+│   ├── famas-data-service/SKILL.md
+│   ├── a-stock-data/SKILL.md      # A股全栈数据工具（集成自开源项目）
+│   └── etfirst/SKILL.md
+├── .agents/skills/                # Codex CLI Skill 定义（与 .claude/ 同步）
+├── docs/                          # 设计文档
+│   ├── FAMAS-Router-Prompt.md     # Router 主控 Prompt（完整版）
+│   ├── data-validation-rules.md   # 数据校验规则集（4 层 39 检测点）
+│   ├── mcp-data-layer-design.md   # MCP 数据工具层设计文档
+│   ├── fund-scoring-engine.md     # 评分引擎（合规版）
+│   ├── data-architecture.md       # 分层数据架构
+│   ├── a-stock-data/              # A股数据层集成文档（来自开源项目）
+│   ├── knowledge-file-organization.md  # Knowledge 文件组织方案
+│   ├── testing-guide.md           # 测试指引（L1-L6）
+│   └── CHANGELOG.md               # 变更日志
+└── README.md
+```
+
+---
+
+## 许可证 📜
+
+[MIT](LICENSE)
+
+> **文档版本**: v2.0
+> **最后更新**: 2026-07-26
+> **维护者**: Fund Analysis Multi-Agent System Team

@@ -196,4 +196,18 @@ tools: WebSearch, WebFetch, Bash, Read
   "sector_attribution": {
     "top3_sectors": [string],
     "sector_hhi": number | null,
-    "se
+    "sector_rotation_feature": string | null,
+    "sector_deviation_vs_benchmark_pct": number | null
+  },
+  "holding_analysis": {
+    "top10_concentration_pct": number | null,
+    "turnover_trend": string | null,
+    "concentration_change": string | null,
+    "holding_stability": string | null
+  },
+  "risk_profile_summary": string | null,
+  "source": string | null,
+  "missing_data": [string]
+}
+```
+</output_format>

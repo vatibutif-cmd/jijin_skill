@@ -1,8 +1,22 @@
 [project]
 name = "famas-mcp-data-server"
-version = "2.1.0"
-description = "MCP data server for FAMAS - Fund Analysis Multi-Agent System. 10 tools covering all 10 agents' data needs (basic info, nav, holdings, manager, index, announcements, realtime, capital flow, push)."
+version = "2.2.0"
+description = "MCP data server for FAMAS - Fund Analysis Multi-Agent System. 14 tools covering fund + A-stock data (basic info, nav, holdings, manager, index, announcements, realtime, capital flow, push, A股行情/板块资金流/行业排名/个股新闻)."
 requires-python = ">=3.10"
 dependencies = [
     "mcp>=1.0.0",
-    "fast
+    "fastmcp>=2.0.0",
+    "akshare>=1.16.0",
+    "pandas>=2.0.0",
+    "requests>=2.31.0",
+]
+
+[project.optional-dependencies]
+# A股数据层完整能力（a-stock-data）：mootdx 通达信 TCP + stockstats 技术指标
+a-stock = [
+    "mootdx>=0.10",
+    "stockstats>=0.3",
+]
+
+[project.scripts]
+famas-data-server = "server:main"

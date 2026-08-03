@@ -138,4 +138,19 @@ tools: WebSearch, WebFetch, Bash, Read
   },
   "stability": {
     "tenure_score": number | null,
-    "scale_stability": string | nul
+    "scale_stability": string | null,
+    "co_management_ratio": number | null,
+    "co_manager_stability": string | null
+  },
+  "adverse_performance": {
+    "bear_market_rank": string | null,
+    "drawdown_control": string | null,
+    "alpha_stability": string | null,
+    "style_adaptability": string | null
+  },
+  "overall_assessment": string | null,
+  "source": string | null,
+  "missing_data": [string]
+}
+```
+</output_format>

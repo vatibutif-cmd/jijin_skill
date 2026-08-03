@@ -37,6 +37,17 @@ from utils.ak_wrapper import (
     fetch_capital_flow, send_webhook_push,
     safe_float, get_cache_stats,
 )
+# A股数据层（集成自 a-stock-data，见 mcp_server/a_stock_data/）
+try:
+    from a_stock_data import (
+        stock_quote as a_stock_quote,
+        board_fund_flow as a_board_fund_flow,
+        industry_comparison as a_industry_comparison,
+        eastmoney_stock_news as a_stock_news,
+    )
+    _A_STOCK_AVAILABLE = True
+except ImportError:
+    _A_STOCK_AVAILABLE = False
 
 # ── Logging ─────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -448,4 +459,97 @@ async def push_notification(
     return res
 
 
-# ═════════════════════════════════════════════════════════════════�
+# ═══════════════════════════════════════════════════════════════════════
+# A股数据工具（集成自 a-stock-data · V3.6.0 · Apache-2.0）
+# ═══════════════════════════════════════════════════════════════════════
+
+@server.tool()
+async def a_stock_quote_tool(codes: str) -> dict:
+    """批量获取A股/指数/ETF实时行情（腾讯财经，不封IP）。codes: 逗号分隔的6位代码，如 '600519,000300,510300'。返回现价/涨跌幅/PE/PB/市值/换手率等"""
+    if not _A_STOCK_AVAILABLE:
+        return error_resp("MODULE_UNAVAILABLE", "a_stock_data module not installed; pip install requests")
+    code_list = [c.strip() for c in str(codes).split(",") if c.strip()]
+    if not code_list:
+        return error_resp("INVALID_INPUT", "codes is required", None)
+    if len(code_list) > 20:
+        return error_resp("INVALID_INPUT", "max 20 codes per call", None)
+    try:
+        return {"source": "腾讯财经", "quotes": a_stock_quote(code_list)}
+    except Exception as e:
+        return error_resp("QUOTE_ERROR", str(e)[:200])
+
+
+@server.tool()
+async def a_stock_board_fund_flow(board_type: str = "industry", period: str = "today", top_n: int = 20) -> dict:
+    """板块资金流向排名（东方财富）。board_type: industry(行业)/concept(概念)/region(地域)；period: today(今日)/5d(5日)/10d(10日)。返回主力净流入/净占比/领涨股，供行业筛选与宏观风格判断"""
+    if not _A_STOCK_AVAILABLE:
+        return error_resp("MODULE_UNAVAILABLE", "a_stock_data module not installed")
+    if board_type not in ("industry", "concept", "region"):
+        return error_resp("INVALID_INPUT", "board_type must be industry/concept/region")
+    if period not in ("today", "5d", "10d"):
+        return error_resp("INVALID_INPUT", "period must be today/5d/10d")
+    if not isinstance(top_n, int) or top_n < 1 or top_n > 200:
+        return error_resp("INVALID_INPUT", "top_n must be 1-200")
+    try:
+        data = a_board_fund_flow(board_type, period, top_n)
+        data["source"] = "东方财富 push2"
+        return data
+    except Exception as e:
+        return error_resp("FLOW_ERROR", str(e)[:200])
+
+
+@server.tool()
+async def a_stock_industry_rank(top_n: int = 20) -> dict:
+    """全行业涨跌幅排名（东方财富，~100个行业）。返回涨幅榜TOP与跌幅榜BOTTOM，含上涨/下跌家数与领涨股，供行业轮动判断"""
+    if not _A_STOCK_AVAILABLE:
+        return error_resp("MODULE_UNAVAILABLE", "a_stock_data module not installed")
+    if not isinstance(top_n, int) or top_n < 1 or top_n > 50:
+        return error_resp("INVALID_INPUT", "top_n must be 1-50")
+    try:
+        data = a_industry_comparison(top_n)
+        data["source"] = "东方财富 push2"
+        return data
+    except Exception as e:
+        return error_resp("RANK_ERROR", str(e)[:200])
+
+
+@server.tool()
+async def a_stock_stock_news(code: str, page_size: int = 20) -> dict:
+    """获取个股新闻（东方财富）。code: 6位股票代码。返回日期/标题/来源/链接，供持仓穿透时追踪重仓股动态"""
+    if not _A_STOCK_AVAILABLE:
+        return error_resp("MODULE_UNAVAILABLE", "a_stock_data module not installed")
+    ok, err = check_fund_code(code)
+    if not ok:
+        return error_resp("INVALID_INPUT", err, code)
+    if not isinstance(page_size, int) or page_size < 1 or page_size > 50:
+        return error_resp("INVALID_INPUT", "page_size must be 1-50")
+    try:
+        news = a_stock_news(code, page_size)
+        return {"code": code, "total": len(news), "news": news, "source": "东方财富"}
+    except Exception as e:
+        return error_resp("NEWS_ERROR", str(e)[:200])
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# Health check
+# ═══════════════════════════════════════════════════════════════════════
+@server.tool()
+async def famas_health() -> dict:
+    """FAMAS MCP Server 健康检查 + 缓存统计"""
+    return {"status":"ok","version":"2.2.0",
+            "tools":["fund_basic_info","fund_nav_history","fund_holdings",
+                      "fund_manager_info","index_data","fund_announcements",
+                      "realtime_index_spot","realtime_etf_spot","capital_flow_data","push_notification",
+                      "a_stock_quote_tool","a_stock_board_fund_flow","a_stock_industry_rank","a_stock_stock_news"],
+            "a_stock_module": _A_STOCK_AVAILABLE,
+            "cache":get_cache_stats()}
+
+
+# ── Entry ─────────────────────────────────────────────────────────────
+def main():
+    logger.info("FAMAS MCP Data Server v2.2.0 — 14 tools / 10 agents / Realtime & Push + A股数据层")
+    server.run()
+
+if __name__=="__main__":
+    main()
+

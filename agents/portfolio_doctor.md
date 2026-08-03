@@ -154,4 +154,21 @@ tools: WebSearch, WebFetch, Bash, Read
     "peer_comparison": string | null
   },
   "rebalancing": {
-    "current_issues": [strin
+    "current_issues": [string],
+    "target_allocation_suggestion": string | null,
+    "adjustment_plan": [
+      {
+        "action": string | null,
+        "target_fund_code": string | null,
+        "current_weight_pct": number | null,
+        "suggested_weight_pct": number | null,
+        "rationale": string | null
+      }
+    ],
+    "priority": string | null
+  },
+  "disclaimer": string,
+  "missing_data": [string]
+}
+```
+</output_format>

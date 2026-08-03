@@ -327,4 +327,5 @@ print(response)
 ---
 
 > **文档版本**: v1.0
-> **最后更新**:
+> **最后更新**: 2026-06-21
+> **维护者**: Fund Analysis Multi-Agent System Team

@@ -133,4 +133,18 @@ tools: WebSearch, WebFetch, Bash, Read
     "style_drift_enabled": boolean,
     "style_drift_threshold_sigma": number | null,
     "performance_lag_enabled": boolean,
-    "performance_lag_threshold_quar
+    "performance_lag_threshold_quarters": number | null,
+    "performance_lag_threshold_pct": number | null,
+    "fee_change_enabled": boolean,
+    "announcement_risk_enabled": boolean
+  },
+  "monitoring_log": {
+    "last_check": string | null,
+    "next_check_suggestion": string | null,
+    "check_interval": string | null
+  },
+  "source": string | null,
+  "missing_data": [string]
+}
+```
+</output_format>

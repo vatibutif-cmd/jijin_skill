@@ -546,4 +546,3 @@ def send_webhook_push(
             "error": str(e)[:200],
             "delivered_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
-                       

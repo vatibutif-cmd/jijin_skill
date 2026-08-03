@@ -118,3 +118,18 @@ tools: WebSearch, WebFetch, Bash, Read
   },
   "policy_environment": {
     "monetary_policy": string | null,
+    "fiscal_policy": string | null,
+    "industrial_policy_heat": string | null,
+    "regulatory_impact": string | null
+  },
+  "macro_fit": {
+    "fit_score": number | null,
+    "tailwind_factors": [string],
+    "headwind_factors": [string],
+    "timing_suggestion": string | null
+  },
+  "source": string | null,
+  "missing_data": [string]
+}
+```
+</output_format>

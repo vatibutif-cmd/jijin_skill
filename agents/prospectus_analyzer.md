@@ -117,4 +117,19 @@ tools: WebSearch, WebFetch, Read, Grep
     "custody_fee_pct": number | null,
     "service_fee_pct": number | null,
     "subscription_fee_range": string | null,
-    "redemption_fee_range": st
+    "redemption_fee_range": string | null,
+    "fee_percentile": string | null
+  },
+  "holder_structure": {
+    "institutional_ratio_pct": number | null,
+    "individual_ratio_pct": number | null,
+    "concentration_assessment": string | null,
+    "institutional_trend": string | null
+  },
+  "special_clauses": [string],
+  "risk_summary": string | null,
+  "source": string | null,
+  "missing_data": [string]
+}
+```
+</output_format>
